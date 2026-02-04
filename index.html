@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>邀请下载</title>
+  <style>
+    :root {
+      --ink-900: #12131a;
+      --ink-700: #303548;
+      --ink-500: #5a6279;
+      --ink-300: #9aa1b3;
+      --sky-50: #f4f7ff;
+      --sky-100: #e7edff;
+      --mint-300: #92e7c7;
+      --sun-400: #ffbf68;
+      --brand-600: #2f6b59;
+      --brand-500: #3c866f;
+      --card: #ffffff;
+      --shadow: 0 20px 40px rgba(19, 35, 54, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink-900);
+      font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+      background:
+        radial-gradient(1200px 800px at 15% 10%, #eff6ff 0%, #ffffff 55%),
+        radial-gradient(1000px 600px at 90% 5%, #fef3e4 0%, #ffffff 55%),
+        #ffffff;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .page {
+      width: min(94vw, 440px);
+      padding: 18px 16px 36px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--ink-500);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .topbar .back {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      box-shadow: 0 6px 16px rgba(20, 32, 51, 0.08);
+      font-weight: 700;
+    }
+    .topbar .history {
+      color: var(--brand-600);
+      font-weight: 700;
+    }
+    .hero {
+      background: linear-gradient(135deg, #f8fbff 0%, #f1f6ff 45%, #fff4e8 100%);
+      border-radius: 24px;
+      padding: 22px 20px 20px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: float-in 0.6s ease-out both;
+    }
+    .hero:after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      top: -40px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle at 30% 30%, var(--mint-300) 0%, transparent 60%);
+      opacity: 0.5;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin: 0 0 6px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: var(--ink-500);
+      margin: 0 0 12px;
+    }
+    .greeting {
+      font-size: 16px;
+      line-height: 1.7;
+      margin: 0;
+      color: var(--ink-700);
+    }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid #e3e8f7;
+      font-size: 12px;
+      color: var(--ink-500);
+      box-shadow: 0 6px 14px rgba(33, 49, 74, 0.08);
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 18px 2px 10px;
+    }
+    .list {
+      display: grid;
+      gap: 12px;
+    }
+    .video {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 14px 14px 14px 12px;
+      display: grid;
+      grid-template-columns: 62px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      box-shadow: 0 10px 20px rgba(26, 39, 60, 0.08);
+      border: 1px solid #edf0f8;
+      animation: rise 0.6s ease-out both;
+    }
+    .video:nth-child(2) { animation-delay: 0.08s; }
+    .video:nth-child(3) { animation-delay: 0.16s; }
+    .thumb {
+      width: 62px;
+      height: 62px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #f7fbff 0%, #f0f4ff 40%, #e6f7ef 100%);
+      display: grid;
+      place-items: center;
+      position: relative;
+      border: 1px solid #e5ebf7;
+    }
+    .thumb:before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 12px solid var(--brand-600);
+      margin-left: 4px;
+    }
+    .duration {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(18, 19, 26, 0.72);
+      color: #fff;
+      font-family: system-ui, sans-serif;
+    }
+    .video h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+    .video p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--ink-500);
+      line-height: 1.5;
+    }
+    .play-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      border: none;
+      background: #f3f7ff;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 1px #e1e8fa;
+      cursor: pointer;
+    }
+    .play-btn:before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 10px solid var(--brand-600);
+      margin-left: 2px;
+    }
+    .cta-wrap {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #2e6a58 0%, #3e8c73 60%, #2f6b59 100%);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 14px 26px rgba(33, 89, 72, 0.28);
+      color: #fff;
+    }
+    .cta-wrap h4 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .cta-wrap p {
+      margin: 0 0 12px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.82);
+    }
+    .cta {
+      width: 100%;
+      border: none;
+      padding: 14px 12px;
+      border-radius: 14px;
+      background: #ffffff;
+      color: var(--brand-600);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(15, 32, 26, 0.2);
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-300);
+      margin-top: 12px;
+    }
+    .page-records .title {
+      margin-top: 8px;
+    }
+    .page-records .subtitle {
+      margin-bottom: 14px;
+    }
+    .back-link {
+      border: none;
+      cursor: pointer;
+    }
+    .records {
+      display: grid;
+      gap: 10px;
+    }
+    .record {
+      border: 1px solid #edf0f8;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fafbff;
+    }
+    .record-time {
+      font-size: 12px;
+      color: var(--ink-300);
+      margin-bottom: 6px;
+      font-family: system-ui, sans-serif;
+    }
+    .record-main {
+      font-size: 14px;
+      color: var(--ink-700);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .record-phone {
+      font-weight: 700;
+      color: var(--ink-900);
+      font-family: system-ui, sans-serif;
+    }
+    .record-dot {
+      color: var(--ink-300);
+    }
+    .record-merchant {
+      font-weight: 600;
+    }
+    @keyframes float-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="pageHome">
+    <div class="topbar">
+      <div class="back">&lt;</div>
+      <div class="history">邀请记录</div>
+    </div>
+
+    <section class="hero">
+      <h1 class="title">邀请下载</h1>
+      <p class="subtitle">让朋友秒懂价值，轻松完成下载</p>
+      <p class="greeting">
+        「教练名称」你好！把推荐变简单。我们准备了3段短视频，把核心功能讲清楚，
+        让新朋友 1 分钟看懂、3 分钟上手。
+      </p>
+      <div class="pill-row">
+        <span class="pill">真实场景</span>
+        <span class="pill">快速上手</span>
+        <span class="pill">可直接分享</span>
+      </div>
+    </section>
+
+    <h2 class="section-title">推荐材料包</h2>
+    <div class="list">
+      <div class="video">
+        <div class="thumb"><span class="duration">01:12</span></div>
+        <div>
+          <h3>一客一群：提醒好帮手</h3>
+          <p>自动跟进、避免遗忘，让服务更贴心。</p>
+        </div>
+        <button class="play-btn" aria-label="播放视频"></button>
+      </div>
+      <div class="video">
+        <div class="thumb"><span class="duration">01:36</span></div>
+        <div>
+          <h3>会员成果：自动生成海报</h3>
+          <p>一键分享成果，转介绍更自然。</p>
+        </div>
+        <button class="play-btn" aria-label="播放视频"></button>
+      </div>
+      <div class="video">
+        <div class="thumb"><span class="duration">01:08</span></div>
+        <div>
+          <h3>线上服务：额外收益</h3>
+          <p>开启线上服务，收入结构更稳。</p>
+        </div>
+        <button class="play-btn" aria-label="播放视频"></button>
+      </div>
+    </div>
+
+    <section class="cta-wrap">
+      <h4>一键分享下载链接</h4>
+      <p>复制或转发给朋友，系统会自动引导下载。</p>
+      <button class="cta">分享链接</button>
+    </section>
+
+    <div class="footer-note">分享后可在「邀请记录」查看进度</div>
+  </main>
+
+  <main class="page page-records" id="pageRecords" hidden>
+    <div class="topbar">
+      <button class="back back-link" id="recordsBack" aria-label="返回">&lt;</button>
+      <div class="history">邀请记录</div>
+    </div>
+    <h1 class="title">邀请记录</h1>
+    <p class="subtitle">按邀请时间排序</p>
+    <div class="records" id="records"></div>
+  </main>
+
+  <script>
+    const historyBtn = document.querySelector(".history");
+    const pageHome = document.getElementById("pageHome");
+    const pageRecords = document.getElementById("pageRecords");
+    const recordsBack = document.getElementById("recordsBack");
+    const records = document.getElementById("records");
+
+    const data = [
+      { time: "2026-02-03 18:21", phone: "138****6427", merchant: "曦光普拉提" },
+      { time: "2026-02-02 14:05", phone: "186****9031", merchant: "醒晨瑜伽" },
+      { time: "2026-02-01 09:42", phone: "137****1168", merchant: "云逸体能" },
+      { time: "2026-01-30 20:16", phone: "150****7712", merchant: "澄心健康管理" },
+      { time: "2026-01-29 11:03", phone: "189****4280", merchant: "海上瑜伽馆" }
+    ];
+
+    function renderRecords() {
+      records.innerHTML = data.map(item => `
+        <div class="record">
+          <div class="record-time">${item.time}</div>
+          <div class="record-main">
+            <span class="record-phone">${item.phone}</span>
+            <span class="record-dot">·</span>
+            <span class="record-merchant">${item.merchant}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function openRecords() {
+      renderRecords();
+      pageHome.hidden = true;
+      pageRecords.hidden = false;
+    }
+    function closeRecords() {
+      pageHome.hidden = false;
+      pageRecords.hidden = true;
+    }
+
+    historyBtn.addEventListener("click", openRecords);
+    recordsBack.addEventListener("click", closeRecords);
+  </script>
+</body>
+</html>
